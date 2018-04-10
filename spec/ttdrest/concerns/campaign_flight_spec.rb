@@ -18,7 +18,7 @@ describe Ttdrest::Client do
           'CampaignId' => campaign_id,
           'CampaignFlightId' => campaign_flight_id,
           'EndDateExclusiveUTC' => end_date,
-          'StartDateInclusiveUTC' => start_date
+          'StartDateInclusiveUTC' => start_date,
         }
       }
       context "update" do
@@ -31,7 +31,7 @@ describe Ttdrest::Client do
               budget: budget,
               daily_budget: daily_budget,
               start_date: start_date,
-              end_date: end_date
+              end_date: end_date,
             )
           end
         end
@@ -45,7 +45,7 @@ describe Ttdrest::Client do
               budget: budget,
               daily_budget: daily_budget,
               start_date: start_date,
-              end_date: end_date
+              end_date: end_date,
             )
           end
         end
@@ -59,7 +59,7 @@ describe Ttdrest::Client do
               budget: budget,
               daily_budget: daily_budget,
               start_date: start_date,
-              end_date: end_date
+              end_date: end_date,
             )
           end
 
@@ -73,7 +73,7 @@ describe Ttdrest::Client do
                 budget: budget,
                 daily_budget: daily_budget,
                 start_date: nil,
-                end_date: end_date
+                end_date: end_date,
               )
             end
           end
