@@ -9,7 +9,7 @@ module Ttdrest
             'DailyTargetInAdvertiserCurrency' => daily_budget,
             'CampaignId' => campaign_id,
             'CampaignFlightId' => campaign_flight_id,
-            'EndDateExclusiveUTC' => end_date
+            'EndDateExclusiveUTC' => end_date,
           }
           flight_data["StartDateInclusiveUTC"] = start_date if start_date.present?
           result = data_put("/campaignflight", 'application/json', flight_data.to_json)
