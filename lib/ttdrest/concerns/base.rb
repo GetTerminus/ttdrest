@@ -37,7 +37,7 @@ module Ttdrest
       end
 
       def parse_header_retry(response)
-        return nil unless response['Retry-After']
+        return nil unless response&['Retry-After']
 
         if response['Retry-After'] =~ /^\d+$/
           sleep(response['Retry-After'].to_i)
@@ -64,11 +64,11 @@ module Ttdrest
           end
 
           check_response(response)
-        rescue RecoverableHttpError
+        rescue RecoverableHttpError, SocketError
           raise if retries >= ERROR_RETRIES
           retries += 1
 
-          if sleep_time = parse_header_retry
+          if sleep_time = parse_header_retry(response)
             sleep(sleep_time)
           else
             sleep((1.25 ** retries) * 1 - (0.3 * rand))
