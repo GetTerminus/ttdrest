@@ -71,7 +71,7 @@ module Ttdrest
           if sleep_time = parse_header_retry
             sleep(sleep_time)
           else
-            sleep((1.25 ** reties) * 1 - (0.3 * rand))
+            sleep((1.25 ** retries) * 1 - (0.3 * rand))
           end
 
           retry
