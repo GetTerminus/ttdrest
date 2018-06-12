@@ -65,7 +65,7 @@ module Ttdrest
 
           check_response(response)
         rescue RecoverableHttpError
-          raise if retries <= ERROR_RETRIES
+          raise if retries >= ERROR_RETRIES
           retries += 1
 
           if sleep_time = parse_header_retry
