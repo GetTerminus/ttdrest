@@ -3,7 +3,13 @@ require 'active_support/notifications'
 
 module Ttdrest
   class AuthorizationFailedError < StandardError; end
-  class RecoverableHttpError < StandardError; end
+  class RecoverableHttpError < StandardError
+    def initialize(message = nil, data = {})
+      super(message)
+
+      @data = data
+    end
+  end
 
   module Concerns
     module Base
@@ -13,6 +19,7 @@ module Ttdrest
       VERSION = "v3"
       RETRIES = 2
       ERROR_RETRIES = 3
+      MAXIMUM_WAIT_TIME = 120
 
       def authenticate(options = {})
         client_id = self.client_login || options[:client_login]
@@ -26,7 +33,7 @@ module Ttdrest
         if response.code.eql?("403")
           raise AuthorizationFailedError
         elsif retryable_http_error?(response)
-          raise RecoverableHttpError
+          raise RecoverableHttpError.new('', response)
         end
       end
 
@@ -37,14 +44,15 @@ module Ttdrest
       end
 
       def parse_header_retry(response)
-        return nil unless response&['Retry-After']
+        return nil unless response && response['Retry-After']
 
         if response['Retry-After'] =~ /^\d+$/
-          sleep(response['Retry-After'].to_i)
+          response['Retry-After'].to_i
         else
-          date = Date.parse(response['Retry-After'])
+          date = Time.rfc2822(response['Retry-After'])
           wait_time = date.to_i - Time.now.to_i
-          wait_time.positive? ? wait_time : nil
+          return nil unless wait_time.positive?
+          wait_time > MAXIMUM_WAIT_TIME ? MAXIMUM_WAIT_TIME :  wait_time
         end
       rescue ArgumentError
         nil
