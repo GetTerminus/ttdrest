@@ -12,7 +12,7 @@ module Ttdrest
         path = '/hdreports'
         content_type = 'application/json'
         report_data = {}.tap do |search_params|
-          search_params['AdvertiserId"'] = advertiser_id
+          search_params['AdvertiserId'] = advertiser_id
           search_params['ReportDateUTC'] = report_date.strftime("%Y-%m-%d")
           search_params['Type'] = options[:type] if options[:type]
           search_params['Duration'] = options[:duration] if options[:duration]
