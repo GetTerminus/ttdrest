@@ -77,7 +77,7 @@ module Ttdrest
           advertiser_data = advertiser_data.merge({"Keywords" => params[:keywords]})
         end
         if !params[:industry_category_id].nil?
-          advertiser_data = advertiser_data.merge({"IndustryCategoryId" => params[:industry_category_id]})
+          advertiser_data = advertiser_data.merge({"CategoryId" => params[:industry_category_id]})
         end
         return advertiser_data
       end

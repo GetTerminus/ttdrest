@@ -56,7 +56,7 @@ module Ttdrest
           ad_group_data = ad_group_data.merge({"IsEnabled" => params[:is_enabled]})
         end
         if !params[:industry_category_id].nil?
-          ad_group_data = ad_group_data.merge({"IndustryCategoryId" => params[:industry_category_id]})
+          ad_group_data = ad_group_data.merge({"CategoryId" => params[:industry_category_id]})
         end
 
         # Build RTB ad group data hash
