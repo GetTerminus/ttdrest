@@ -364,10 +364,10 @@ describe Ttdrest::Client do
         end
 
         describe 'industry_category_id' do
-          it 'determines the value of IndustryCategoryId' do
+          it 'determines the value of CategoryId' do
             expect(
               client.build_ad_group_data(ad_group_id, campaign_id, name, budget_settings, base_bid_cpm, max_bid_cpm, creative_ids, params)
-            ).to include({ "IndustryCategoryId" => 54 })
+            ).to include({ "CategoryId" => 54 })
           end
 
           context 'when nil' do
@@ -376,7 +376,7 @@ describe Ttdrest::Client do
             it 'does not contain the key at all' do
               expect(
                 client.build_ad_group_data(ad_group_id, campaign_id, name, budget_settings, base_bid_cpm, max_bid_cpm, creative_ids, params).keys
-              ).to_not include("IndustryCategoryId")
+              ).to_not include("CategoryId")
             end
           end
         end
