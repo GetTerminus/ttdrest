@@ -9,10 +9,12 @@ describe Ttdrest::Client do
       let(:advertiser_id) { 'bar' }
       let(:name)        { 'Test Advertiser' }
       let(:domain_address) { 'https://www.terminus.com' }
+      let(:country) { 'US' }
 
       let(:params) do 
         {
-          domain_address: domain_address
+          domain_address: domain_address,
+          country: country
         }
       end
 
@@ -105,6 +107,44 @@ describe Ttdrest::Client do
               expect(
                 client.build_advertiser_data(partner_id, advertiser_id, name, params)
               ).to_not include("DomainAddress")
+            end
+          end
+        end
+
+        describe 'country' do
+          it 'determines the value of Country' do
+            expect(
+              client.build_advertiser_data(partner_id, advertiser_id, name, params)
+            ).to include({ "Country" => 'US' })
+          end
+
+          context 'when nil' do
+            let(:country) { nil }
+
+            it 'does not contain the key at all' do
+              expect(
+                client.build_advertiser_data(partner_id, advertiser_id, name, params)
+              ).to_not include("Country")
+            end
+          end
+
+          context 'when empty' do
+            let(:domain_address) { '' }
+
+            it 'does not contain the key at all' do
+              expect(
+                client.build_advertiser_data(partner_id, advertiser_id, name, params)
+              ).to_not include("Country")
+            end
+          end
+
+          context 'when the key is not provided at all' do
+            let(:params) { {} }
+
+            it 'does not contain the key' do
+              expect(
+                client.build_advertiser_data(partner_id, advertiser_id, name, params)
+              ).to_not include("Country")
             end
           end
         end
