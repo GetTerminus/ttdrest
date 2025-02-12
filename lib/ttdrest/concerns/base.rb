@@ -174,6 +174,7 @@ module Ttdrest
         connection.read_timeout = 500
         connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
         return connection
+      end
       def graphql_mutation(query, variables = {})
         tries = RETRIES
         begin
