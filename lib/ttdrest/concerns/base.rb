@@ -174,6 +174,37 @@ module Ttdrest
         connection.read_timeout = 500
         connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
         return connection
+      def graphql_mutation(query, variables = {})
+        tries = RETRIES
+        begin
+          uri = "https://#{graphql_host}"
+
+          request = Net::HTTP::Post.new(uri, { 'Content-Type' => 'application/json' })
+          request['TTD-Auth'] = auth_token
+          request.body = { query: query, variables: variables }.to_json
+
+          response = perform_request(request, graphql_connection)
+          response.body.blank? ? '' : JSON.parse(response.body)
+        rescue AuthorizationFailedError
+          tries -= 1
+          if tries > 0
+            self.auth_token = authenticate
+            retry
+          end
+        rescue StandardError => e
+          puts 'Error In GRAPHQL query: ' + e.message
+        end
+      end
+
+      private
+
+      def graphql_connection(options = {})
+        uri = URI.parse("https://#{graphql_host}" || options[:graphql_host])
+        connection = Net::HTTP.new(uri.host, uri.port)
+        connection.use_ssl = true
+        connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        connection
       end
     end
   end

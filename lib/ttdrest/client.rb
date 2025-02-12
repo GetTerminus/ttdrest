@@ -12,6 +12,7 @@ require "ttdrest/concerns/hd_reports"
 require "ttdrest/concerns/my_reports"
 require "ttdrest/concerns/ip_targeting_list"
 require "ttdrest/concerns/tracking_tags"
+require "ttdrest/concerns/seed"
 
 module Ttdrest
   # Interface for using the TTD REST API
@@ -30,6 +31,7 @@ module Ttdrest
     include Ttdrest::Concerns::MyReports
     include Ttdrest::Concerns::IpTargetingList
     include Ttdrest::Concerns::TrackingTags
+    include Ttdrest::Concerns::Seed
 
     # The Auth client login
     attr_accessor :client_login
@@ -53,6 +55,8 @@ module Ttdrest
     # The Advertiser ID
     attr_accessor :advertiser_id
 
+    attr_accessor :graphql_host
+
     def initialize(options = {})
       if options.is_a?(String)
         @options = YAML.load_file(options)
@@ -65,6 +69,7 @@ module Ttdrest
       self.client_password = ENV['TTD_CLIENT_PASSWORD'] || @options[:client_password]
       self.host = ENV['TTD_HOST'] || @options[:host]
       self.advertiser_id = ENV['TTD_ADVERTISER_ID'] || @options[:advertiser_id]
+      self.graphql_host = ENV['TTD_GRAPHQL_HOST'] || @options[:graphql_host]
       @auth_token = @options[:auth_token]
     end
   end
